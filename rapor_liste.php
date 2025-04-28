@@ -5,15 +5,33 @@
 <h2>📋 Tarih Aralığında İşlem Listesi</h2>
 
 <form method="GET">
-    Başlangıç: <input type="date" name="baslangic" required>
-    Bitiş: <input type="date" name="bitis" required>
+    Başlangıç: <input type="date" name="baslangic" required value="<?php echo $_GET['baslangic'] ?? ''; ?>">
+    Bitiş: <input type="date" name="bitis" required value="<?php echo $_GET['bitis'] ?? ''; ?>">
+    <label>
+        <input type="checkbox" name="sadece_odenmemisler" value="1" <?php if (isset($_GET['sadece_odenmemisler'])) echo 'checked'; ?>>
+        Sadece ödenmemişler
+    </label>
     <button type="submit">Listele</button>
 </form>
 
 <?php
 if (isset($_GET['baslangic']) && isset($_GET['bitis'])) {
-    $stmt = $pdo->prepare("SELECT * FROM islemler WHERE tarih BETWEEN ? AND ? ORDER BY tarih ASC");
-    $stmt->execute([$_GET['baslangic'], $_GET['bitis']]);
+    $sql = "SELECT * FROM islemler WHERE tarih BETWEEN ? AND ?";
+    $params = [$_GET['baslangic'], $_GET['bitis']];
+
+    if (isset($_GET['sadece_odenmemisler'])) {
+        $sql .= " AND odendi = 0";
+    }
+
+    $sql .= " ORDER BY tarih ASC";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    // Küçük Bonus: Eğer filtre aktifse uyarı mesajı göster
+    if (isset($_GET['sadece_odenmemisler'])) {
+        echo "<p style='color:red; font-weight:bold;'>❗ Şu anda sadece ÖDENMEMİŞ kayıtlar listeleniyor.</p>";
+    }
 
     echo "<table border='1' cellpadding='5' cellspacing='0'>";
     echo "<tr><th>Ödendi</th><th>Tarih</th><th>Tutar</th><th>Açıklama</th></tr>";
@@ -34,6 +52,7 @@ if (isset($_GET['baslangic']) && isset($_GET['bitis'])) {
 ?>
 
 <script>
+// Checkbox değişince veritabanına kaydet
 document.querySelectorAll('.odendi-checkbox').forEach(function(checkbox) {
     checkbox.addEventListener('change', function() {
         let id = this.getAttribute('data-id');
@@ -49,7 +68,7 @@ document.querySelectorAll('.odendi-checkbox').forEach(function(checkbox) {
         .then(response => response.text())
         .then(data => {
             console.log(data);
-            location.reload(); // sayfayı yenile ki renkler güncellensin
+            location.reload(); // Sayfayı yenile ki checkbox ve satır rengi güncellensin
         });
     });
 });

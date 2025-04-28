@@ -2,6 +2,9 @@
 
 <link rel="stylesheet" href="assets/style.css">
 
+<!-- Ana Sayfa Butonu -->
+<a href="index.php" class="anasayfa-button">🏠 Ana Sayfa</a>
+
 <h2>📊 Aylık Rapor</h2>
 
 <table border="1" cellpadding="5" cellspacing="0">

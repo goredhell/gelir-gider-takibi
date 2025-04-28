@@ -2,6 +2,9 @@
 
 <link rel="stylesheet" href="assets/style.css">
 
+<!-- Ana Sayfa Butonu -->
+<a href="index.php" class="anasayfa-button">🏠 Ana Sayfa</a>
+
 <h2>➕ Yeni Gelir/Gider Kaydı</h2>
 
 <form method="POST">

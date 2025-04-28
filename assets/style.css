@@ -44,5 +44,20 @@ ul li {
 }
 
 .odendi {
-    background-color: #e0ffe0; /* Açık yeşil */
+    background-color: #e0ffe0; /* Ödendi olan satır açık yeşil */
+}
+
+.anasayfa-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.anasayfa-button:hover {
+    background-color: #0056b3;
 }

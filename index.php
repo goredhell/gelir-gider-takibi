@@ -2,11 +2,36 @@
 
 <link rel="stylesheet" href="assets/style.css">
 
-<h1>💵 Gelir/Gider Takibi</h1>
+<h1>💵 Kişisel Finans Takip Sistemi</h1>
 
-<ul>
-    <li><a href="kayit_ekle.php">➕ Yeni İşlem Ekle</a></li>
-    <li><a href="rapor_aylik.php">📊 Aylık Rapor</a></li>
-    <li><a href="rapor_liste.php">📋 Tarih Aralığında Listele</a></li>
-    <li><a href="logout.php">🚪 Çıkış Yap</a></li>
-</ul>
+<div class="menu-container">
+
+    <div class="menu-card">
+        <a href="kayit_ekle.php">
+            <div class="menu-icon">➕</div>
+            <div class="menu-text">Yeni Kayıt Ekle</div>
+        </a>
+    </div>
+
+    <div class="menu-card">
+        <a href="rapor_liste.php">
+            <div class="menu-icon">📋</div>
+            <div class="menu-text">Kayıtları Listele</div>
+        </a>
+    </div>
+
+    <div class="menu-card">
+        <a href="rapor_aylik.php">
+            <div class="menu-icon">📈</div>
+            <div class="menu-text">Aylık Rapor</div>
+        </a>
+    </div>
+
+    <div class="menu-card">
+        <a href="logout.php">
+            <div class="menu-icon">🚪</div>
+            <div class="menu-text">Çıkış Yap</div>
+        </a>
+    </div>
+
+</div>

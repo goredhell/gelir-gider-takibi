@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS odemeler_db;
+USE odemeler_db;
+
+CREATE TABLE IF NOT EXISTS islemler (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    miktar DECIMAL(10,2) NOT NULL,
+    tarih DATE NOT NULL,
+    aciklama VARCHAR(255)
+);
+
+ALTER TABLE islemler ADD COLUMN odendi TINYINT(1) DEFAULT 0;

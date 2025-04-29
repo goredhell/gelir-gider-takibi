@@ -1,16 +1,21 @@
 <?php
 session_start();
-
-$kullaniciAdi = 'admin';
-$sifre = 'admin';
+include 'db.php'; // Veritabanı bağlantı dosyası
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($_POST['kullanici'] == $kullaniciAdi && $_POST['sifre'] == $sifre) {
-        $_SESSION['user'] = $kullaniciAdi;
+    $kullanici = $_POST['kullanici'] ?? '';
+    $parola = $_POST['parola'] ?? '';
+
+    $stmt = $pdo->prepare("SELECT parola_hash FROM kullanicilar WHERE kullanici_adi = ?");
+    $stmt->execute([$kullanici]);
+    $kullaniciVerisi = $stmt->fetch();
+
+    if ($kullaniciVerisi && password_verify($parola, $kullaniciVerisi['parola_hash'])) {
+        $_SESSION['user'] = $kullanici;
         header('Location: index.php');
         exit;
     } else {
-        $hata = "Kullanıcı adı veya şifre yanlış!";
+        $hata = "Kullanıcı adı veya parola yanlış!";
     }
 }
 ?>
@@ -75,8 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="text" name="kullanici" id="kullanici" required>
         </div>
         <div class="form-row">
-            <label for="sifre">Şifre:</label>
-            <input type="password" name="sifre" id="sifre" required>
+            <label for="parola">Parola:</label>
+            <input type="password" name="parola" id="parola" required>
         </div>
         <button type="submit">Giriş</button>
         <?php if (isset($hata)) echo "<p class='error'>$hata</p>"; ?>

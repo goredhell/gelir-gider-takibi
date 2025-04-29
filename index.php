@@ -1,4 +1,14 @@
-<?php include 'db.php'; ?>
+<?php
+session_start();
+include 'db.php';
+
+if (!isset($_SESSION['user'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$oturumKullanici = $_SESSION['user'];
+?>
 
 <link rel="stylesheet" href="assets/style.css">
 
@@ -26,6 +36,15 @@
             <div class="menu-text">Aylık Rapor</div>
         </a>
     </div>
+
+    <?php if ($oturumKullanici === 'admin'): ?>
+    <div class="menu-card">
+        <a href="user_panel.php">
+            <div class="menu-icon">👥</div>
+            <div class="menu-text">Kullanıcı Paneli</div>
+        </a>
+    </div>
+    <?php endif; ?>
 
     <div class="menu-card">
         <a href="logout.php">

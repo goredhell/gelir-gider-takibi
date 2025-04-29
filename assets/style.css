@@ -1,3 +1,4 @@
+/* Genel vücut düzeni */
 body {
     font-family: Arial, sans-serif;
     padding: 20px;
@@ -5,6 +6,7 @@ body {
     margin: 0;
 }
 
+/* Başlık stilini düzenle */
 h1 {
     text-align: center;
     margin-bottom: 40px;
@@ -12,6 +14,7 @@ h1 {
     font-size: 28px;
 }
 
+/* Menü düzeni */
 .menu-container {
     display: flex;
     flex-wrap: wrap;
@@ -96,22 +99,97 @@ h1 {
     }
 }
 
-
+/* Ödendi olan satırın arka planını yeşil yap */
 .odendi {
     background-color: #e0ffe0; /* Ödendi olan satır açık yeşil */
 }
 
-.anasayfa-button {
+/* Form düzeni */
+form {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    font-weight: bold;
+    margin-right: 10px;
     display: inline-block;
-    margin-bottom: 20px;
-    padding: 8px 16px;
+    margin-bottom: 8px;
+}
+
+/* Form elemanlarının düzeni */
+form input,
+form select {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Submit butonunu stillendir */
+form button {
+    padding: 10px 15px;
+    font-size: 16px;
     background-color: #007bff;
     color: white;
-    text-decoration: none;
-    border-radius: 6px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Butona hover efekti */
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Formun tüm elemanları mobilde dikey olarak sıralanacak */
+@media (max-width: 600px) {
+    form label,
+    form input,
+    form select,
+    form button {
+        width: 100%;
+        display: block;
+    }
+
+    form button {
+        margin-top: 10px;
+    }
+}
+
+/* Formdaki checkbox'ları hizalayalım */
+form input[type="checkbox"] {
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Bilgilendirme mesajları için stil */
+p.alert-message {
+    color: red;
     font-weight: bold;
 }
 
-.anasayfa-button:hover {
-    background-color: #0056b3;
+/* Veritabanı tablosu düzeni */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
 }

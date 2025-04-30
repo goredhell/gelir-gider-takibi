@@ -19,19 +19,27 @@
     
     <label for="etiket">Etiket:</label>
     <input type="text" name="etiket" id="etiket" required placeholder="Etiket girin">
-    
+	
+    <label>
+        <input type="checkbox" name="odendi" value="1"> Ödendi
+    </label><br>
+
     <button type="submit">Kaydet</button>
 </form>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $stmt = $pdo->prepare("INSERT INTO islemler (miktar, tarih, aciklama, etiket) VALUES (?, ?, ?, ?)");
+    $odeme_tarihi = isset($_POST['odendi']) ? date('Y-m-d') : null;
+
+    $stmt = $pdo->prepare("INSERT INTO islemler (miktar, tarih, aciklama, etiket, odeme_tarihi) VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([
         $_POST['miktar'],
         $_POST['tarih'],
         $_POST['aciklama'],
-        $_POST['etiket']
+        $_POST['etiket'],
+        $odeme_tarihi
     ]);
+
     echo "<p style='color:green;'>✅ Kayıt eklendi!</p>";
 }
 ?>

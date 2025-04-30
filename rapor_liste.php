@@ -2,27 +2,25 @@
 
 <link rel="stylesheet" href="assets/style.css">
 
-<!-- Ana Sayfa Butonu -->
 <a href="index.php" class="anasayfa-button">🏠 Ana Sayfa</a>
 
 <h2>📋 Tarih Aralığında İşlem Listesi</h2>
 
 <?php
-// Bu ayın başlangıç ve bitiş tarihlerini almak
 $today = date("Y-m-d");
-$first_day_of_month = date("Y-m-01"); // Bu ayın ilk günü
-$last_day_of_month = date("Y-m-t"); // Bu ayın son günü
+$first_day_of_month = date("Y-m-01");
+$last_day_of_month = date("Y-m-t");
 ?>
 
 <form method="GET" action="rapor_liste.php">
     <label for="baslangic">Başlangıç:</label>
-    <input type="date" name="baslangic" required value="<?php echo $_GET['baslangic'] ?? $first_day_of_month; ?>">
+    <input type="date" name="baslangic" required value="<?= $_GET['baslangic'] ?? $first_day_of_month; ?>">
 
     <label for="bitis">Bitiş:</label>
-    <input type="date" name="bitis" required value="<?php echo $_GET['bitis'] ?? $last_day_of_month; ?>">
+    <input type="date" name="bitis" required value="<?= $_GET['bitis'] ?? $last_day_of_month; ?>">
 
     <label>
-        <input type="checkbox" name="sadece_odenmemisler" value="1" <?php if (isset($_GET['sadece_odenmemisler'])) echo 'checked'; ?>>
+        <input type="checkbox" name="sadece_odenmemisler" value="1" <?= isset($_GET['sadece_odenmemisler']) ? 'checked' : '' ?>>
         Sadece ödenmemişler
     </label>
 
@@ -32,7 +30,7 @@ $last_day_of_month = date("Y-m-t"); // Bu ayın son günü
         <?php
         $etiketler = $pdo->query("SELECT DISTINCT etiket FROM islemler WHERE etiket IS NOT NULL")->fetchAll();
         foreach ($etiketler as $etiket) {
-            $secili = (isset($_GET['etiket']) && $_GET['etiket'] == $etiket['etiket']) ? 'selected' : '';
+            $secili = ($_GET['etiket'] ?? '') == $etiket['etiket'] ? 'selected' : '';
             echo "<option value='" . htmlspecialchars($etiket['etiket']) . "' $secili>" . htmlspecialchars($etiket['etiket']) . "</option>";
         }
         ?>
@@ -40,8 +38,6 @@ $last_day_of_month = date("Y-m-t"); // Bu ayın son günü
 
     <button type="submit">Listele</button>
 </form>
-
-
 
 <?php
 if (isset($_GET['baslangic']) && isset($_GET['bitis'])) {
@@ -58,11 +54,9 @@ if (isset($_GET['baslangic']) && isset($_GET['bitis'])) {
     }
 
     $sql .= " ORDER BY tarih ASC";
-
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
 
-    // Bonus mesajlar
     if (isset($_GET['sadece_odenmemisler'])) {
         echo "<p style='color:red; font-weight:bold;'>❗ Şu anda sadece ÖDENMEMİŞ kayıtlar listeleniyor.</p>";
     }
@@ -71,7 +65,7 @@ if (isset($_GET['baslangic']) && isset($_GET['bitis'])) {
     }
 
     echo "<table border='1' cellpadding='5' cellspacing='0'>";
-    echo "<tr><th>Ödendi</th><th>Tarih</th><th>Tutar</th><th>Açıklama</th><th>Etiket</th><th>SİL!</th></tr>";
+    echo "<tr><th>Ödendi</th><th>Tarih</th><th>Ödeme Tarihi</th><th>Tutar</th><th>Açıklama</th><th>Etiket</th><th>Sil</th></tr>";
 
     $total_income = 0;
     $total_expense = 0;
@@ -79,33 +73,29 @@ if (isset($_GET['baslangic']) && isset($_GET['bitis'])) {
     while ($row = $stmt->fetch()) {
         $checked = $row['odendi'] ? 'checked' : '';
         $rowClass = $row['odendi'] ? 'class="odendi"' : '';
+        $odemeTarihi = $row['odeme_tarihi'] ?? '-';
 
         echo "<tr $rowClass>";
         echo "<td><input type='checkbox' class='odendi-checkbox' data-id='{$row['id']}' $checked></td>";
         echo "<td>{$row['tarih']}</td>";
+        echo "<td>" . ($row['odendi'] ? $odemeTarihi : '-') . "</td>";
         echo "<td>{$row['miktar']} ₺</td>";
         echo "<td>{$row['aciklama']}</td>";
         echo "<td>" . htmlspecialchars($row['etiket']) . "</td>";
-		echo "<td><a href='delete.php?id={$row['id']}' onclick='return confirm(\"Bu kaydı silmek istediğinize emin misiniz?\")' style='color:red;'>🗑️ Sil</a></td>";
-		echo "</tr>";
+        echo "<td><a href='delete.php?id={$row['id']}' onclick='return confirm(\"Bu kaydı silmek istediğinize emin misiniz?\")' style='color:red;'>🗑️</a></td>";
+        echo "</tr>";
 
-        // Toplamları ekle
-        if ($row['miktar'] > 0) {
-            $total_income += $row['miktar'];
-        } elseif ($row['miktar'] < 0) {
-            $total_expense += $row['miktar'];
-        }
+        if ($row['miktar'] > 0) $total_income += $row['miktar'];
+        else $total_expense += $row['miktar'];
     }
 
-    echo "</table>";
-
-    echo "<br><div style='font-size:18px; font-weight:bold;'>";
+    echo "</table><br>";
+    echo "<div style='font-size:18px; font-weight:bold;'>";
     echo "💰 Toplam Gelir: <span style='color:green;'>" . number_format($total_income, 2, ',', '.') . " ₺</span><br>";
     echo "💸 Toplam Gider: <span style='color:red;'>" . number_format(abs($total_expense), 2, ',', '.') . " ₺</span>";
     echo "</div>";
 }
 ?>
-
 
 <script>
 // Checkbox değişince veritabanına kaydet
@@ -116,15 +106,13 @@ document.querySelectorAll('.odendi-checkbox').forEach(function(checkbox) {
 
         fetch('update_odendi.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'id=' + id + '&odendi=' + odendi
         })
         .then(response => response.text())
         .then(data => {
             console.log(data);
-            location.reload(); // Sayfayı yenile ki checkbox ve satır rengi güncellensin
+            location.reload(); // Güncellemeden sonra yenile
         });
     });
 });

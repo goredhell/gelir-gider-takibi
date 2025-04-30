@@ -19,3 +19,5 @@ CREATE TABLE kullanicilar (
 );
 
 INSERT INTO kullanicilar (kullanici_adi, parola_hash) VALUES ("admin", "$2y$10$sJBFIkAj7EWY0X9OSajomOFIB7Lo/DAgVVKu4fGoWqfjGLN0LHSj.")
+
+ALTER TABLE islemler ADD COLUMN odeme_tarihi DATE DEFAULT NULL;

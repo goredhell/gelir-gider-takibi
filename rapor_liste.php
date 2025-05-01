@@ -90,7 +90,7 @@ $last_day_of_month = date("Y-m-t");
                     </td>
                     <td><?= $row['tarih'] ?></td>
                     <td><?= $row['odendi'] ? $odemeTarihi : '-' ?></td>
-                    <td><?= number_format($miktar, 2, ',', '.') ?> ₺</td>
+                    <td><?= number_format($miktar, 0, ',', '.') ?> ₺</td>
                     <td><?= $row['aciklama'] ?></td>
                     <td><?= htmlspecialchars($row['etiket']) ?></td>
                     <td>
@@ -101,8 +101,8 @@ $last_day_of_month = date("Y-m-t");
         </table>
         <br>
         <div style='font-size:18px; font-weight:bold;'>
-            💰 Toplam Gelir: <span style='color:green;'><?= number_format($toplamGelir, 2, ',', '.') ?> ₺</span><br>
-            💸 Toplam Gider: <span style='color:red;'><?= number_format(abs($toplamGider), 2, ',', '.') ?> ₺</span>
+            💰 Toplam Gelir: <span style='color:green;'><?= number_format($toplamGelir, 0, ',', '.') ?> ₺</span><br>
+            💸 Toplam Gider: <span style='color:red;'><?= number_format(abs($toplamGider), 0, ',', '.') ?> ₺</span>
         </div>
         <div style="margin-top:20px; font-size:18px; font-weight:bold;">
             📌 Seçili İşlemlerin Toplamı: <span id="seciliToplam">0.00 ₺</span>

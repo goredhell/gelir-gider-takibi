@@ -38,7 +38,7 @@ foreach ($aylar as $num => $isim) {
         $toplam = $stmt->fetch()['toplam'] ?? 0;
 
         $renk = ($toplam >= 0) ? 'green' : 'red';
-        $toplam = number_format($toplam, 2, ',', '.');
+        $toplam = number_format(round($toplam), 0, ',', '.');
 
         echo "<td style='color:$renk;'>$toplam ₺</td>";
     }

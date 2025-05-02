@@ -13,18 +13,18 @@ $last_day_of_month = date("Y-m-t");
 ?>
 
 <form method="GET" action="rapor_liste.php">
+	<div class="form-grid">
     <label for="baslangic">Başlangıç:</label>
     <input type="date" name="baslangic" required value="<?= $_GET['baslangic'] ?? $first_day_of_month; ?>">
 
     <label for="bitis">Bitiş:</label>
     <input type="date" name="bitis" required value="<?= $_GET['bitis'] ?? $last_day_of_month; ?>">
 
-    <label>
-        <input type="checkbox" name="sadece_odenmemisler" value="1" <?= isset($_GET['sadece_odenmemisler']) ? 'checked' : '' ?>>
-        Sadece ödenmemişler
-    </label>
+    <label for="sadece_odenmemisler">Ödenmemişler</label>
+    <input type="checkbox" name="sadece_odenmemisler" value="1" <?= isset($_GET['sadece_odenmemisler']) ? 'checked' : '' ?>>
 
-    <label for="etiket">Etikete Göre Filtrele:</label>
+
+    <label for="etiket">Etiket:</label>
     <select name="etiket" id="etiket">
         <option value="">-- Hepsi --</option>
         <?php
@@ -35,6 +35,7 @@ $last_day_of_month = date("Y-m-t");
         }
         ?>
     </select>
+	</div>
 
     <button type="submit">Listele</button>
 </form>
@@ -94,7 +95,8 @@ $last_day_of_month = date("Y-m-t");
                     <td><?= $row['aciklama'] ?></td>
                     <td><?= htmlspecialchars($row['etiket']) ?></td>
                     <td>
-                        <a href="delete.php?id=<?= $row['id'] ?>" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?')" style="color:red;">🗑️</a>
+                        <a href="delete.php?id=<?= $row['id'] ?>&baslangic=<?= urlencode($_GET['baslangic']) ?>&bitis=<?= urlencode($_GET['bitis']) ?>&etiket=<?= urlencode($_GET['etiket'] ?? '') ?>&sadece_odenmemisler=<?= isset($_GET['sadece_odenmemisler']) ? '1' : '0' ?>" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?')" style="color:red;">🗑️</a>
+
                     </td>
                 </tr>
             <?php endwhile; ?>

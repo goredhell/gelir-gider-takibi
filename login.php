@@ -6,12 +6,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kullanici = $_POST['kullanici'] ?? '';
     $parola = $_POST['parola'] ?? '';
 
-    $stmt = $pdo->prepare("SELECT parola_hash FROM kullanicilar WHERE kullanici_adi = ?");
+    $stmt = $pdo->prepare("SELECT parola_hash, admin FROM kullanicilar WHERE kullanici_adi = ?");
     $stmt->execute([$kullanici]);
     $kullaniciVerisi = $stmt->fetch();
 
     if ($kullaniciVerisi && password_verify($parola, $kullaniciVerisi['parola_hash'])) {
         $_SESSION['user'] = $kullanici;
+        $_SESSION['admin'] = $kullaniciVerisi['admin']; // admin bilgisi de session'a kaydedilir
         header('Location: index.php');
         exit;
     } else {
@@ -19,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 
 <link rel="stylesheet" href="assets/style.css">
 

@@ -61,6 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['admin_guncelle'])) {
 <!DOCTYPE html>
 <html>
 <head>
+
+	<a href="index.php" class="anasayfa-button">🏠 Ana Sayfa</a>
     <meta charset="UTF-8">
     <title>Kullanıcı Paneli</title>
     <link rel="stylesheet" href="assets/style.css">
